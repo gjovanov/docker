@@ -75,4 +75,4 @@ RUN /scripts/detect_external_ip.sh
 
 ENTRYPOINT ["/scripts/docker_entrypoint.sh"]
 
-CMD ["-n", "--log-file=stdout", "--external-ip=$(/scripts/detect_external_ip.sh)"]
+CMD ["-n", "--log-file=stdout", "--external-ip=$(REAL_EXTERNAL_IP)"]
