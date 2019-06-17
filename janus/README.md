@@ -21,5 +21,8 @@ docker run \
   -p 81:80 \
   -p 444:443 \
   --name="janus" \
+  -v /xplorify/nginx/cert/xplorify.net.pem:/usr/local/nginx/server.crt \
+  -v /xplorify/nginx/cert/xplorify.net.key:/usr/local/nginx/server.key \
+  -v /xplorify/nginx/log_janus:/app/log \
   gjovanov/janus
 ```
