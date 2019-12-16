@@ -1,4 +1,4 @@
-FROM buildpack-deps:jessie
+FROM buildpack-deps:stretch
 
 RUN sed -i 's/archive.ubuntu.com/mirror.aarnet.edu.au\/pub\/ubuntu\/archive/g' /etc/apt/sources.list
 
@@ -46,10 +46,11 @@ RUN YASM="1.3.0" && cd ~/ffmpeg_sources && \
     make install && \
     make distclean
 
-RUN VPX="1.5.0" && cd ~/ffmpeg_sources && \
-    wget http://storage.googleapis.com/downloads.webmproject.org/releases/webm/libvpx-1.5.0.tar.bz2 && \
-    tar xjvf libvpx-$VPX.tar.bz2 && \
-    cd libvpx-$VPX && \
+RUN VPX="v1.8.1" && cd ~/ffmpeg_sources && \
+    wget https://chromium.googlesource.com/webm/libvpx/+archive/$VPX.tar.gz && \
+    tar xzvf $VPX.tar.gz && \
+    pwd \
+    cd $VPX && \
     PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --disable-examples --disable-unit-tests && \
     PATH="$HOME/bin:$PATH" make && \
     make install && \
@@ -84,7 +85,7 @@ RUN X264="20181001-2245-stable" && cd ~/ffmpeg_sources && \
     make install && \
     make distclean
 
-RUN FDK_AAC="0.1.4" && cd ~/ffmpeg_sources && \
+RUN FDK_AAC="2.0.1" && cd ~/ffmpeg_sources && \
     wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/archive/v$FDK_AAC.tar.gz && \
     tar xzvf fdk-aac.tar.gz && \
     cd fdk-aac-$FDK_AAC && \
@@ -94,11 +95,11 @@ RUN FDK_AAC="0.1.4" && cd ~/ffmpeg_sources && \
     make install && \
     make distclean
 
-RUN FFMPEG_VER="n4.0.2" && cd ~/ffmpeg_sources && \
+RUN FFMPEG_VER="n4.2.1" && cd ~/ffmpeg_sources && \
     wget https://github.com/FFmpeg/FFmpeg/archive/$FFMPEG_VER.zip && \
     unzip $FFMPEG_VER.zip
 
-RUN FFMPEG_VER="n4.0.2" && cd ~/ffmpeg_sources && \
+RUN FFMPEG_VER="n4.2.1" && cd ~/ffmpeg_sources && \
     cd FFmpeg-$FFMPEG_VER && \
     PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
@@ -132,7 +133,7 @@ RUN FFMPEG_VER="n4.0.2" && cd ~/ffmpeg_sources && \
 # nginx-rtmp with openresty
 RUN ZLIB="zlib-1.2.11" && vNGRTMP="v1.1.11" && PCRE="8.41" && nginx_build=/root/nginx && mkdir $nginx_build && \
     cd $nginx_build && \
-    wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE.tar.gz && \
+    wget https://ftp.pcre.org/pub/pcre/pcre-$PCRE.tar.gz && \
     tar -zxf pcre-$PCRE.tar.gz && \
     cd pcre-$PCRE && \
     ./configure && make && make install && \
@@ -146,7 +147,7 @@ RUN ZLIB="zlib-1.2.11" && vNGRTMP="v1.1.11" && PCRE="8.41" && nginx_build=/root/
     tar zxf $vNGRTMP.tar.gz && mv nginx-rtmp-module-* nginx-rtmp-module
 
 
-RUN OPENRESTY="1.13.6.1" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty_build=/root/openresty && mkdir $openresty_build && \
+RUN OPENRESTY="1.13.6.2" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty_build=/root/openresty && mkdir $openresty_build && \
     wget https://openresty.org/download/openresty-$OPENRESTY.tar.gz && \
     tar zxf openresty-$OPENRESTY.tar.gz && \
     cd openresty-$OPENRESTY && \
@@ -227,10 +228,9 @@ RUN SRTP="2.2.0" && apt-get remove -y libsrtp0-dev && wget https://github.com/ci
 
 # 8 March, 2019 1 commit 67807a17ce983a860804d7732aaf7d2fb56150ba
 RUN apt-get remove -y libnice-dev libnice10 && \
-    echo "deb http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list && \
-    apt-get -o Acquire::Check-Valid-Until=false update && \
-    apt-get install -y gtk-doc-tools libgnutls28-dev -t jessie-backports  && \
-    apt-get install -y libglib2.0-0 -t jessie-backports && \
+    echo "deb http://deb.debian.org/debian  stretch-backports main" >> /etc/apt/sources.list && \
+    apt-get  update && \
+    apt-get install -y gtk-doc-tools libgnutls28-dev -t stretch-backports  && \
     git clone https://gitlab.freedesktop.org/libnice/libnice.git && \
     cd libnice && \
     git checkout 67807a17ce983a860804d7732aaf7d2fb56150ba && \
@@ -238,6 +238,7 @@ RUN apt-get remove -y libnice-dev libnice10 && \
     ./configure --prefix=/usr && \
     make && \
     make install
+
 
 
 # datachannel build
@@ -249,10 +250,10 @@ RUN cd / && git clone https://github.com/sctplab/usrsctp.git && cd /usrsctp && \
 
 
 
-# tag v0.6.2 https://github.com/meetecho/janus-gateway/commit/ddbf37fef43ade61d73173c7661a2449c13582d4
+# tag v0.8.0 https://github.com/meetecho/janus-gateway/commit/f3a4a5bde832c0278db3fe5adc9ffb5e859d1927
 RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus-gateway && \
     sh autogen.sh &&  \
-    git checkout origin/master && git reset --hard ddbf37fef43ade61d73173c7661a2449c13582d4 && \
+    git checkout origin/master && git reset --hard f3a4a5bde832c0278db3fe5adc9ffb5e859d1927 && \ 
     PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-post-processing \
     --enable-boringssl \
@@ -275,3 +276,11 @@ RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus
 COPY nginx.conf /usr/local/nginx/nginx.conf
 
 CMD nginx && janus
+
+# RUN apt-get -y install iperf iperf3
+# RUN git clone https://github.com/HewlettPackard/netperf.git && \
+#     cd netperf && \
+#     bash autogen.sh && \
+#     ./configure && \
+#     make && \
+#     make install
