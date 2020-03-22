@@ -233,7 +233,7 @@ RUN apt-get remove -y libnice-dev libnice10 && \
     apt-get install -y gtk-doc-tools libgnutls28-dev -t stretch-backports  && \
     git clone https://gitlab.freedesktop.org/libnice/libnice.git && \
     cd libnice && \
-    git checkout 67807a17ce983a860804d7732aaf7d2fb56150ba && \
+    git checkout latest-release && \
     bash autogen.sh && \
     ./configure --prefix=/usr && \
     make && \
