@@ -25,7 +25,7 @@ RUN apt-get -y update && apt-get install -y libmicrohttpd-dev \
     cmake \
     unzip \
     zip \
-    lsof wget vim sudo rsync cron mysql-client openssh-server supervisor locate
+    lsof wget vim sudo rsync cron mysql-client openssh-server supervisor locate gstreamer1.0-tools mplayer valgrind certbot python-certbot-apache
 
 
 
@@ -233,26 +233,24 @@ RUN apt-get remove -y libnice-dev libnice10 && \
     apt-get install -y gtk-doc-tools libgnutls28-dev -t stretch-backports  && \
     git clone https://gitlab.freedesktop.org/libnice/libnice.git && \
     cd libnice && \
-    git checkout latest-release && \
+    git checkout 67807a17ce983a860804d7732aaf7d2fb56150ba && \
     bash autogen.sh && \
     ./configure --prefix=/usr && \
     make && \
     make install
 
 
-
 # datachannel build
-RUN cd / && git clone https://github.com/sctplab/usrsctp.git && \
-    cd /usrsctp && \
-    git checkout origin/master && \
-    git reset --hard 1c9c82fbe3582ed7c474ba4326e5929d12584005 && \
+RUN cd / && git clone https://github.com/sctplab/usrsctp.git && cd /usrsctp && \
+    git checkout origin/master && git reset --hard 1c9c82fbe3582ed7c474ba4326e5929d12584005 && \
     ./bootstrap && \
     ./configure && \
     make && make install
 
 
+
 RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus-gateway && \
-    git checkout refs/tags/v0.9.1 && \
+    git checkout refs/tags/v0.9.0 && \
     sh autogen.sh &&  \
     PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-post-processing \
@@ -275,12 +273,5 @@ RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus
 
 COPY nginx.conf /usr/local/nginx/nginx.conf
 
-CMD nginx && janus
 
-# RUN apt-get -y install iperf iperf3
-# RUN git clone https://github.com/HewlettPackard/netperf.git && \
-#     cd netperf && \
-#     bash autogen.sh && \
-#     ./configure && \
-#     make && \
-#     make install
+CMD nginx && janus
