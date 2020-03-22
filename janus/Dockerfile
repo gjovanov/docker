@@ -240,12 +240,31 @@ RUN apt-get remove -y libnice-dev libnice10 && \
     make install
 
 
+RUN COTURN="4.5.0.8" && wget https://github.com/coturn/coturn/archive/$COTURN.tar.gz && \
+    tar xzvf $COTURN.tar.gz && \
+    cd coturn-$COTURN && \
+    ./configure && \
+    make && make install
+
+
+# RUN GDB="8.0" && wget ftp://sourceware.org/pub/gdb/releases/gdb-$GDB.tar.gz && \
+#     tar xzvf gdb-$GDB.tar.gz && \
+#     cd gdb-$GDB && \
+#     ./configure && \
+#     make && \
+#     make install
+
+
+# ./configure CFLAGS="-fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-lasan"
+
+
 # datachannel build
 RUN cd / && git clone https://github.com/sctplab/usrsctp.git && cd /usrsctp && \
     git checkout origin/master && git reset --hard 1c9c82fbe3582ed7c474ba4326e5929d12584005 && \
     ./bootstrap && \
     ./configure && \
     make && make install
+
 
 
 
