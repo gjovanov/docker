@@ -32,7 +32,7 @@ RUN apk update \
   openssl-dev \
   libsrtp-dev \
   libcurl \
-  glib-dev \
+#  glib-dev \
   opus-dev \
   libogg-dev \
   libconfig-dev \
