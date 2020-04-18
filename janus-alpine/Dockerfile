@@ -11,26 +11,14 @@ ARG USRSCTP_VERSION="0.9.3.0"
 
 
 # Install Build Dependencies
-RUN apk update \
-&& apk add --no-cache --virtual .build-deps \
-  autoconf \
-  automake \
-  cmake \
-  git \
-  make \
-  g++ \
-# Install Janus Dependencies
-&& apk add --no-cache \
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main openssl && \
+  apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing gdal-dev && \
+  apk add --no-cache \
   coreutils \
-  gdal-dev \
-  gtk-doc \
-  libtool \
-  gengetopt \
-  gcc \
-  file \
+  doxygen \
   libmicrohttpd-dev \
+  libressl-dev \
   jansson-dev \
-  openssl \
   openssl-dev \
   libsrtp-dev \
   libcurl \
@@ -39,11 +27,20 @@ RUN apk update \
   libogg-dev \
   libconfig-dev \
   pkgconf \
+  gengetopt \
+  libtool \
+  autoconf \
+  automake \
+  cmake \
+  libnice-dev \
   lksctp-tools-dev \
-  zlib-dev \
+  git \
+  gcc \
+  make \
+  g++ \
+  gtk-doc \
   util-linux-dev \
-  --repository http://nl.alpinelinux.org/alpine/edge/testing/ \
-  --repository http://nl.alpinelinux.org/alpine/edge/main \
+  zlib-dev \
 #Install libnice
   && cd / \
   && git clone https://gitlab.freedesktop.org/libnice/libnice \
@@ -96,7 +93,7 @@ RUN apk update \
   && rm -rf /usrsctp \
   && rm -rf /libwebsockets \
   && rm -rf /janus-gateway \
-  && apk del .build-deps \
+#  && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
   && rm -rf /tmp/* \
   && apk update
