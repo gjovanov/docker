@@ -1,6 +1,14 @@
 
 FROM alpine:edge
 
+
+ARG LIBSRTP_VERSION="v2.3.0"
+ARG LIBWEBSOCKETS_VERSION="v3.2.2"
+ARG USRSCTP_VERSION="0.9.3.0"
+# USRSCTP_VERSION is not used due to:
+# 1. https://github.com/sctplab/usrsctp/issues/325
+# 2. https://github.com/sctplab/usrsctp/pull/417
+
 # Install Build Dependencies
 RUN apk add --no-cache --virtual .build-deps \
   gengetopt \
@@ -14,15 +22,12 @@ RUN apk add --no-cache --virtual .build-deps \
   g++ \
 # Install Janus Dependencies
 && apk add --no-cache \
-  bash \
   coreutils \
   doxygen \
   libmicrohttpd-dev \
-  libressl-dev \
   jansson-dev \
   openssl \
   openssl-dev \
-  gdal-dev \
   libsrtp-dev \
   libcurl \
   glib-dev \
@@ -33,11 +38,19 @@ RUN apk add --no-cache --virtual .build-deps \
   libnice-dev \
   lksctp-tools-dev \
   zlib-dev \
+# Install libsrtp (Secure Real-time Transport Protocol)
+  && cd / \
+  && git clone https://github.com/cisco/libsrtp.git \
+  && cd libsrtp \
+  && git checkout ${LIBSRTP_VERSION} \
+  && ./configure --prefix=/usr --enable-openssl \
+  && make shared_library \
+  && make install \
 # Install libwebsockets
   && cd / \
   && git clone https://github.com/warmcat/libwebsockets.git \
   && cd libwebsockets \
-  && git checkout v3.2.2 \
+  && git checkout ${LIBWEBSOCKETS_VERSION} \
   && mkdir build \
   && cd build \
   && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" -DLWS_MAX_SMP=1 -DLWS_IPV6="ON" .. \
@@ -57,17 +70,19 @@ RUN apk add --no-cache --virtual .build-deps \
   && cd / \
   && git clone https://github.com/meetecho/janus-gateway.git \
   && cd janus-gateway \
-#  && git checkout refs/tags/v0.9.1 \
   && sh autogen.sh \
   && ./configure --prefix=/opt/janus --disable-rabbitmq --disable-mqtt \
   && make \
   && make install \
   && make configs \
 # Cleanup
+  && rm -rf /libsrtp \
   && rm -rf /usrsctp \
   && rm -rf /libwebsockets \
   && rm -rf /janus-gateway \
-  && apk del .build-deps
+  && apk del .build-deps \
+  && rm -rf /var/cache/apk/* \
+  && rm -rf /tmp/*
 
 
 CMD /opt/janus/bin/janus
