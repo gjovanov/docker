@@ -17,7 +17,6 @@ RUN apk update \
   autoconf \
   automake \
   cmake \
-  musl-dev \
   git \
   gcc \
   make \
@@ -31,7 +30,8 @@ RUN apk update \
   openssl-dev \
   libsrtp-dev \
   libcurl \
-  glib-dev \
+  musl-dev \
+#  glib-dev \
   opus-dev \
   libogg-dev \
   libconfig-dev \
