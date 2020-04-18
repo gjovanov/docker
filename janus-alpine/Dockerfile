@@ -10,38 +10,40 @@ ARG JANUS_VERSION="v0.9.2"
 # 1. https://github.com/sctplab/usrsctp/issues/325
 # 2. https://github.com/sctplab/usrsctp/pull/417
 
-
 # Install Build Dependencies
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main openssl && \
-  apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing gdal-dev && \
-  apk add --no-cache \
+RUN apk update \
+&& apk add --no-cache --virtual .build-deps \
+  gtk-doc \
+  util-linux-dev \
+  gengetopt \
+  libtool \
+  autoconf \
+  automake \
+  cmake \
+  file \
+  git \
+  gcc \
+  make \
+  g++ \
+  --repository http://nl.alpinelinux.org/alpine/edge/testing \
+  --repository http://nl.alpinelinux.org/alpine/edge/main \
+# Install Janus Dependencies
+&& apk add --no-cache \
   coreutils \
-  doxygen \
   libmicrohttpd-dev \
-  libressl-dev \
   jansson-dev \
+  openssl \
   openssl-dev \
-  libsrtp-dev \
   libcurl \
   glib-dev \
   opus-dev \
   libogg-dev \
   libconfig-dev \
   pkgconf \
-  gengetopt \
-  libtool \
-  autoconf \
-  automake \
-  cmake \
-  libnice-dev \
   lksctp-tools-dev \
-  git \
-  gcc \
-  make \
-  g++ \
-  gtk-doc \
-  util-linux-dev \
   zlib-dev \
+  --repository http://nl.alpinelinux.org/alpine/edge/testing \
+  --repository http://nl.alpinelinux.org/alpine/edge/main \
 #Install libnice
   && cd / \
   && git clone https://gitlab.freedesktop.org/libnice/libnice \
@@ -95,7 +97,7 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/ma
   && rm -rf /usrsctp \
   && rm -rf /libwebsockets \
   && rm -rf /janus-gateway \
-#  && apk del .build-deps \
+  && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
   && rm -rf /tmp/* \
   && apk update
