@@ -23,15 +23,16 @@ RUN apk update \
   g++ \
 # Install Janus Dependencies
 && apk add --no-cache \
+  libc6-compat \
   file \
   libmicrohttpd-dev \
   jansson-dev \
+  nghttp2-dev \
   openssl \
   openssl-dev \
   libsrtp-dev \
   libcurl \
-  musl-dev \
-#  glib-dev \
+  glib-dev \
   opus-dev \
   libogg-dev \
   libconfig-dev \
@@ -39,6 +40,8 @@ RUN apk update \
   libnice-dev \
   lksctp-tools-dev \
   zlib-dev \
+  --repository http://nl.alpinelinux.org/alpine/edge/testing/ \
+  --repository http://nl.alpinelinux.org/alpine/edge/main \
 # Install libsrtp (Secure Real-time Transport Protocol)
   && cd / \
   && git clone https://github.com/cisco/libsrtp.git \
