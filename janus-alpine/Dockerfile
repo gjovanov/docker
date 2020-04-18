@@ -22,6 +22,7 @@ RUN apk update \
 # Install Janus Dependencies
 && apk add --no-cache \
   coreutils \
+  gdal-dev \
   gtk-doc \
   libtool \
   gengetopt \
@@ -40,6 +41,7 @@ RUN apk update \
   pkgconf \
   lksctp-tools-dev \
   zlib-dev \
+  util-linux-dev \
   --repository http://nl.alpinelinux.org/alpine/edge/testing/ \
   --repository http://nl.alpinelinux.org/alpine/edge/main \
 #Install libnice
