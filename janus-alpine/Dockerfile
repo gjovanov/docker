@@ -1,7 +1,7 @@
-
 FROM alpine:edge
 
 
+ARG LIBNICE_VERSION="0.1.16"
 ARG LIBSRTP_VERSION="v2.3.0"
 ARG LIBWEBSOCKETS_VERSION="v3.2.2"
 ARG USRSCTP_VERSION="0.9.3.0"
@@ -9,39 +9,48 @@ ARG USRSCTP_VERSION="0.9.3.0"
 # 1. https://github.com/sctplab/usrsctp/issues/325
 # 2. https://github.com/sctplab/usrsctp/pull/417
 
+
 # Install Build Dependencies
 RUN apk update \
 && apk add --no-cache --virtual .build-deps \
-  gengetopt \
-  libtool \
   autoconf \
   automake \
   cmake \
   git \
-  gcc \
   make \
   g++ \
 # Install Janus Dependencies
 && apk add --no-cache \
-  libc6-compat \
+  coreutils \
+  gtk-doc \
+  libtool \
+  gengetopt \
+  gcc \
   file \
   libmicrohttpd-dev \
   jansson-dev \
-  nghttp2-dev \
   openssl \
   openssl-dev \
   libsrtp-dev \
   libcurl \
-#  glib-dev \
+  glib-dev \
   opus-dev \
   libogg-dev \
   libconfig-dev \
   pkgconf \
-  libnice-dev \
   lksctp-tools-dev \
   zlib-dev \
   --repository http://nl.alpinelinux.org/alpine/edge/testing/ \
   --repository http://nl.alpinelinux.org/alpine/edge/main \
+#Install libnice
+  && cd / \
+  && git clone https://gitlab.freedesktop.org/libnice/libnice \
+  && cd libnice \
+  && git checkout ${LIBNICE_VERSION} \
+  && ./autogen.sh \
+  && ./configure --prefix=/usr \
+  && make \
+  && make install \
 # Install libsrtp (Secure Real-time Transport Protocol)
   && cd / \
   && git clone https://github.com/cisco/libsrtp.git \
@@ -80,6 +89,7 @@ RUN apk update \
   && make install \
   && make configs \
 # Cleanup
+  && rm -rf /libnice \
   && rm -rf /libsrtp \
   && rm -rf /usrsctp \
   && rm -rf /libwebsockets \
