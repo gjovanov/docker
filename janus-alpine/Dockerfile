@@ -17,6 +17,7 @@ RUN apk update \
   autoconf \
   automake \
   cmake \
+  musl-dev \
   git \
   gcc \
   make \
