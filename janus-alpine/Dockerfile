@@ -10,7 +10,8 @@ ARG USRSCTP_VERSION="0.9.3.0"
 # 2. https://github.com/sctplab/usrsctp/pull/417
 
 # Install Build Dependencies
-RUN apk add --no-cache --virtual .build-deps \
+RUN apk update \
+&& apk add --no-cache --virtual .build-deps \
   gengetopt \
   libtool \
   autoconf \
@@ -81,7 +82,8 @@ RUN apk add --no-cache --virtual .build-deps \
   && rm -rf /janus-gateway \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
-  && rm -rf /tmp/*
+  && rm -rf /tmp/* \
+  && apk update
 
 
 CMD /opt/janus/bin/janus
