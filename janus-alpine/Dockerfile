@@ -5,6 +5,7 @@ ARG LIBNICE_VERSION="0.1.16"
 ARG LIBSRTP_VERSION="v2.3.0"
 ARG LIBWEBSOCKETS_VERSION="v3.2.2"
 ARG USRSCTP_VERSION="0.9.3.0"
+ARG JANUS_VERSION="v0.9.2"
 # USRSCTP_VERSION is not used due to:
 # 1. https://github.com/sctplab/usrsctp/issues/325
 # 2. https://github.com/sctplab/usrsctp/pull/417
@@ -82,6 +83,7 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/ma
   && cd / \
   && git clone https://github.com/meetecho/janus-gateway.git \
   && cd janus-gateway \
+  && git checkout ${JANUS_VERSION} \
   && sh autogen.sh \
   && ./configure --prefix=/opt/janus --disable-rabbitmq --disable-mqtt \
   && make CFLAGS='-std=c99' \
