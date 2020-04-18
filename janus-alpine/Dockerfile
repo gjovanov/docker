@@ -8,7 +8,6 @@ ARG USRSCTP_VERSION="0.9.3.0"
 # USRSCTP_VERSION is not used due to:
 # 1. https://github.com/sctplab/usrsctp/issues/325
 # 2. https://github.com/sctplab/usrsctp/pull/417
-# 
 
 # Install Build Dependencies
 RUN apk add --no-cache --virtual .build-deps \
@@ -23,8 +22,7 @@ RUN apk add --no-cache --virtual .build-deps \
   g++ \
 # Install Janus Dependencies
 && apk add --no-cache \
-  coreutils \
-  doxygen \
+  file \
   libmicrohttpd-dev \
   jansson-dev \
   openssl \
@@ -73,7 +71,7 @@ RUN apk add --no-cache --virtual .build-deps \
   && cd janus-gateway \
   && sh autogen.sh \
   && ./configure --prefix=/opt/janus --disable-rabbitmq --disable-mqtt \
-  && make \
+  && make CFLAGS='-std=c99' \
   && make install \
   && make configs \
 # Cleanup
