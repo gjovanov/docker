@@ -22,8 +22,8 @@ docker run \
   --name="janus" \
   --restart="always" \
   --network="nginx" \
-  -v /xplorify/nginx/cert/xplorify.net.pem:/usr/local/nginx/server.crt \
-  -v /xplorify/nginx/cert/xplorify.net.key:/usr/local/nginx/server.key \
-  -v /xplorify/nginx/log_janus:/app/log \
+  -v /path_to/xplorify.net.pem:/usr/local/nginx/server.crt \
+  -v /path_to/xplorify.net.key:/usr/local/nginx/server.key \
+  -v /path_to/log_janus:/app/log \
   gjovanov/janus
 ```
