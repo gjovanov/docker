@@ -1,5 +1,8 @@
 FROM alpine:edge
 
+LABEL maintainer="Goran Jovanovs <goran.jovanov@gmail.com>"
+LABEL description="Provides an Alpine image of Janus Gateway"
+
 
 ARG LIBNICE_VERSION="0.1.16"
 ARG LIBSRTP_VERSION="v2.3.0"
