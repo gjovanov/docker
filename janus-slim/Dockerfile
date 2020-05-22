@@ -72,7 +72,7 @@ LABEL description="Janus Gateway Lean Docker Image"
 
 # COPY VERSION .
 
-ARG JANUS_VERSION="v0.9.2"
+ARG JANUS_VERSION="v0.9.5"
 WORKDIR /opt/
 
 COPY --from=prebuilder /opt .
