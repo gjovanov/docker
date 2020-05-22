@@ -107,12 +107,14 @@ RUN rm -rf /var/lib/apt/lists/* \
   autoconf \
   zlib1g-dev \
   curl \
-  libcurl4 \
+# Move libcurl
+  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4 /opt/deps/lib/ \
+  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/deps/lib/ \
 # Install Janus Gateway
   && cd /tmp \
   && git clone https://github.com/meetecho/janus-gateway.git \
   && cd janus-gateway \
-  && git checkout ${JANUS_VERSION} \
+#  && git checkout ${JANUS_VERSION} \
   && sh autogen.sh \
   && export PKG_CONFIG_PATH=/opt/deps/lib/pkgconfig \
   && ./configure \
@@ -143,7 +145,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   autotools-dev \
   autoconf \
   && apt-get autoremove -y \
-  && apt-get install -y libconfig9 libglib2.0-0 libcurl4 \
+  && apt-get install -y libconfig9 libglib2.0-0 \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
   && rm -rf /var/lib/apt/*
