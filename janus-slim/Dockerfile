@@ -27,6 +27,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   gtk-doc-tools \
   libgnutls28-dev \
   libglib2.0-dev \
+  libcurl4 \
 #Install libnice (ICE candidates)
   && cd / \
   && git clone https://gitlab.freedesktop.org/libnice/libnice \
@@ -73,7 +74,7 @@ LABEL description="Janus Gateway Lean Docker Image"
 
 # COPY VERSION .
 
-ARG JANUS_VERSION="v0.9.2"
+ARG JANUS_VERSION="v0.9.5"
 WORKDIR /opt/
 
 COPY --from=prebuilder /opt .
@@ -106,6 +107,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   autoconf \
   zlib1g-dev \
   curl \
+  libcurl4 \
 # Install Janus Gateway
   && cd /tmp \
   && git clone https://github.com/meetecho/janus-gateway.git \
@@ -141,7 +143,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   autotools-dev \
   autoconf \
   && apt-get autoremove -y \
-  && apt-get install -y libconfig9 libglib2.0-0 \
+  && apt-get install -y libconfig9 libglib2.0-0 libcurl4 \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
   && rm -rf /var/lib/apt/*
