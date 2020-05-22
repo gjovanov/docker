@@ -1,5 +1,6 @@
 # Using static version FROM debian:buster-slim AS prebuilder
-FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257 AS prebuilder
+#FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257 AS prebuilder
+FROM debian:buster-slim AS prebuilder
 
 ARG LIBNICE_VERSION="0.1.16"
 ARG LIBSRTP_VERSION="v2.3.0"
