@@ -27,7 +27,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   gtk-doc-tools \
   libgnutls28-dev \
   libglib2.0-dev \
-  libcurl4 \
+  curl \
 #Install libnice (ICE candidates)
   && cd / \
   && git clone https://gitlab.freedesktop.org/libnice/libnice \
@@ -106,10 +106,11 @@ RUN rm -rf /var/lib/apt/lists/* \
   cmake \
   autoconf \
   zlib1g-dev \
-  curl \
+#  curl \
+  libcurl4 \
 # Move libcurl
-  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4 /opt/deps/lib/ \
-  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/deps/lib/ \
+#  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4 /opt/deps/lib/ \
+#  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/deps/lib/ \
 # Install Janus Gateway
   && cd /tmp \
   && git clone https://github.com/meetecho/janus-gateway.git \
