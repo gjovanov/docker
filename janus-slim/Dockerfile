@@ -73,7 +73,7 @@ LABEL description="Janus Gateway Lean Docker Image"
 
 # COPY VERSION .
 
-ARG JANUS_VERSION="v0.9.4"
+ARG JANUS_VERSION="v0.9.2"
 WORKDIR /opt/
 
 COPY --from=prebuilder /opt .
@@ -105,7 +105,6 @@ RUN rm -rf /var/lib/apt/lists/* \
   cmake \
   autoconf \
   zlib1g-dev \
-  libcurl4 \
   curl \
 # Install Janus Gateway
   && cd /tmp \
@@ -142,7 +141,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   autotools-dev \
   autoconf \
   && apt-get autoremove -y \
-  && apt-get install -y libconfig9 libglib2.0-0 libcurl4 \
+  && apt-get install -y libconfig9 libglib2.0-0 \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
   && rm -rf /var/lib/apt/*
