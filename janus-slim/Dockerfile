@@ -104,6 +104,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   cmake \
   autoconf \
   zlib1g-dev \
+  libcurl4 \
   curl \
 # Install Janus Gateway
   && cd /tmp \
