@@ -106,16 +106,13 @@ RUN rm -rf /var/lib/apt/lists/* \
   cmake \
   autoconf \
   zlib1g-dev \
-#  curl \
+  curl \
   libcurl4 \
-# Move libcurl
-#  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4 /opt/deps/lib/ \
-#  && cp /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /opt/deps/lib/ \
 # Install Janus Gateway
   && cd /tmp \
   && git clone https://github.com/meetecho/janus-gateway.git \
   && cd janus-gateway \
-#  && git checkout ${JANUS_VERSION} \
+  && git checkout ${JANUS_VERSION} \
   && sh autogen.sh \
   && export PKG_CONFIG_PATH=/opt/deps/lib/pkgconfig \
   && ./configure \
