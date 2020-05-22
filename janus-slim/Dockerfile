@@ -65,9 +65,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   && ./bootstrap \
   && ./configure --prefix=/opt/deps --disable-warnings-as-errors \
   && make \
-  && make install \
-# Copy libcurl
-  && cp /usr/lib/x86_64-linux-gnu/libcurl* /opt/deps/
+  && make install
 
 #FROM debian:buster-slim AS prebuilder
 FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257
@@ -98,6 +96,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   libini-config-dev \
   libcollection-dev \
   libconfig-dev \
+  libcurl3-gnutls \
   pkg-config \
   gengetopt \
   libtool \
