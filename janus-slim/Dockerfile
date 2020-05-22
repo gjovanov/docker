@@ -23,6 +23,7 @@ ARG JANUS_DEPS=" \
   libgnutls28-dev \
   gtk-doc-tools \
   pkg-config \
+  libcurl4 \
   curl"
 
 ARG LIBNICE_VERSION="0.1.16"
