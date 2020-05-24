@@ -16,8 +16,8 @@ echo "version: $version"
 
 # tag it
 git add -A
-git commit -m "$USERNAME/$IMAGE $version"
-git tag -a "janus-alpine_$version" -m "$USERNAME/$IMAGE version $version"
+git commit -m "$IMAGE $version"
+git tag -a "$IMAGE_$version" -m "$IMAGE version $version"
 git push
 git push --tags
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version

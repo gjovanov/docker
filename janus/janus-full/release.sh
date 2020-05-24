@@ -1,7 +1,7 @@
 set -ex
 # SET THE FOLLOWING VARIABLES
 USERNAME=gjovanov
-IMAGE=janus
+IMAGE=janus-full
 
 # ensure we're up to date
 git pull
@@ -16,8 +16,8 @@ echo "version: $version"
 
 # tag it
 git add -A
-git commit -m "version $version"
-git tag -a "janus_$version" -m "janus version $version"
+git commit -m "$IMAGE version $version"
+git tag -a "$IMAGE_$version" -m "$IMAGE version $version"
 git push
 git push --tags
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
