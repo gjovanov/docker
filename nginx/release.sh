@@ -1,7 +1,7 @@
 set -ex
 # SET THE FOLLOWING VARIABLES
 USERNAME=gjovanov
-IMAGE=janus-alpine
+IMAGE=nginx
 BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 VCS_REF=$(git rev-parse --short HEAD)
 
@@ -21,7 +21,7 @@ echo "version: $version"
 # tag it
 git add -A
 git commit -m "$USERNAME/$IMAGE $version"
-git tag -a "$USERNAME/$IMAGE_$version" -m "$USERNAME/$IMAGE version $version"
+git tag -a "$IMAGE_$version" -m "$IMAGE version $version"
 git push
 git push --tags
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
