@@ -1,6 +1,6 @@
 FROM alpine:edge
 
-MAINTAINER Instrumentisto Team <developer@instrumentisto.com>
+MAINTAINER Goran Jovanov <goran.jovanov@gmail.com>
 
 ADD scripts/ /scripts/
 

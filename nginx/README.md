@@ -7,7 +7,7 @@ Debian:buster-slim based NGINX image with support:
  
 ```
 docker run -d --name nginx \
-    --hostname ngin2 \
+    --hostname nginx \
     --restart always \
     -v /path_to/nginx/nginx.conf:/etc/nginx/nginx.conf \
     -v /path_to/nginx/conf.d/:/etc/nginx/conf.d/ \
