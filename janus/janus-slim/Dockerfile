@@ -37,7 +37,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   && make \
   && make install \
 # Install libsrtp (Secure Real-time Transport Protocol)
-  && apt-get remove -y libsrtp0-dev \
+#  && apt-get remove -y libsrtp0-dev \
   && cd / \
   && git clone https://github.com/cisco/libsrtp.git \
   && cd libsrtp \
@@ -73,7 +73,7 @@ LABEL description="Janus Gateway Lean Docker Image"
 
 # COPY VERSION .
 
-ARG JANUS_VERSION="v0.10.3"
+ARG JANUS_VERSION="v0.10.4"
 WORKDIR /opt/
 
 COPY --from=prebuilder /opt .
