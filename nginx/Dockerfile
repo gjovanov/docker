@@ -1,7 +1,7 @@
 FROM debian:buster-slim AS builder
 
 LABEL maintainer="Goran Jovanov <goran.jovanov@gmail.com>"
-
+LABEL x=y
 ARG NGINX_PATH=/etc/nginx
 ARG NGINX_VERSION=1.19.2
 ARG MAXMIND_VERSION=1.4.2

@@ -22,7 +22,7 @@ echo "version: $version"
 # tag it
 git add -A
 git commit -m "$IMAGE $version"
-git tag -a "$IMAGE_$version" -m "$IMAGE version $version"
+git tag -a "$IMAGE-$version" -m "$IMAGE version $version"
 git push
 git push --tags
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
