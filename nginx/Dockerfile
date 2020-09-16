@@ -4,7 +4,7 @@ LABEL maintainer="Goran Jovanov <goran.jovanov@gmail.com>"
 
 ENV NGINX_PATH /etc/nginx
 
-ARG NGINX_VERSION="1.18.0"
+ARG NGINX_VERSION="1.19.2"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_DEPS="\
   build-essential \
