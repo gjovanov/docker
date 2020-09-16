@@ -2,6 +2,7 @@ set -ex
 # SET THE FOLLOWING VARIABLES
 USERNAME=gjovanov
 IMAGE=nginx
+version=`cat VERSION`
 
 printenv
 
