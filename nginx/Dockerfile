@@ -4,13 +4,19 @@ LABEL maintainer="Goran Jovanov <goran.jovanov@gmail.com>"
 
 ENV NGINX_PATH /etc/nginx
 
-ARG NGINX_VERSION="1.19.2"
+ARG NGINX_VERSION=1.19.2
+ARG MAXMIND_VERSION=1.4.2
+ARG PCRE_VERSION=8.44
+ARG ZLIB_VERSION=1.2.11
+
+
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_DEPS="\
   build-essential \
   git \
   curl \
   cmake \
+  wget \
   libpcre3 \
   libpcre3-dev \
   zlib1g-dev \
@@ -23,11 +29,25 @@ RUN rm -rf /var/lib/apt/lists/* \
   && apt-get -y update \
   && apt-get install -yq apt-utils \
   && apt-get install -yq $BUILD_DEPS \
-  &&curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
+  && wget -qO- https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz | tar zxvf - \
+  && wget -qO- http://zlib.net/zlib-${ZLIB_VERSION}.tar.gz | tar zxvf - \
+  && git clone --depth=1 --recursive https://github.com/leev/ngx_http_geoip2_module \
+  && git clone --depth=1 --recursive https://github.com/cloudflare/quiche.git \
+  && git clone --depth=1 --recursive https://github.com/google/ngx_brotli.git \
+  && git clone --depth=1 --recursive https://github.com/openresty/headers-more-nginx-module.git \
+  && git clone --depth=1 --recursive https://github.com/nginx/njs \
+  && git clone --depth=1 --recursive https://github.com/AirisX/nginx_cookie_flag_module \
+  && wget https://github.com/maxmind/libmaxminddb/releases/download/${MAXMIND_VERSION}/libmaxminddb-${MAXMIND_VERSION}.tar.gz \
+  && tar xf libmaxminddb-${MAXMIND_VERSION}.tar.gz \
+  && cd libmaxminddb-${MAXMIND_VERSION} \
+  && ./configure \
+  && make \
+  && make check \
+  && make install \
+  && ldconfig \
+  && cd .. \
+  && curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
   && tar xvzf nginx-$NGINX_VERSION.tar.gz \
-  && git clone --recursive https://github.com/cloudflare/quiche.git \
-  && git clone --recursive https://github.com/google/ngx_brotli.git \
-  && git clone --recursive https://github.com/openresty/headers-more-nginx-module.git \
   && cd nginx-$NGINX_VERSION \
   && patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch \ 
   && curl https://sh.rustup.rs -sSf | sh -s -- -y -q \
@@ -48,6 +68,9 @@ RUN rm -rf /var/lib/apt/lists/* \
   --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
   --user=nginx \
   --group=nginx  \
+  --with-pcre=/opt/pcre-${PCRE_VERSION} \
+  --with-pcre-jit \
+  --with-zlib=/opt/zlib-${ZLIB_VERSION} \
   --with-compat \
   --with-file-aio \
   --with-threads \
@@ -72,11 +95,14 @@ RUN rm -rf /var/lib/apt/lists/* \
   --with-stream \
   --with-stream_ssl_module \
   --with-stream_ssl_preread_module \
-  --add-module=/opt/ngx_brotli \
   --with-http_v3_module \
   --with-openssl=/opt/quiche/deps/boringssl \
   --with-quiche=/opt/quiche \
+  --add-module=/opt/ngx_brotli \
+  --add-module=/opt/ngx_http_geoip2_module \
   --add-module=/opt/headers-more-nginx-module \
+  --add-module=/opt/njs/nginx \
+  --add-module=/opt/nginx_cookie_flag_module \
   && make \
   && make install
 
@@ -86,6 +112,7 @@ FROM debian:buster-slim
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
 
+ADD ./geoip/ /usr/share/geoip/
 
 RUN rm -rf /var/lib/apt/lists/* \
   && groupadd  nginx \
@@ -96,6 +123,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   && chown nginx: /var/log/nginx/access.log /var/log/nginx/error.log \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log \
+  && ls -al /usr/share/geoip/ \
   && cd / \
   && rm -Rf /tmp/* \
   && apt-get purge -y \
