@@ -137,3 +137,10 @@ EXPOSE 443
 STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
+
+
+ARG VCS_REF
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+  org.label-schema.vcs-ref=$VCS_REF \
+  org.label-schema.vcs-url="https://github.com/gjovanov/docker.git"

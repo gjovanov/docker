@@ -7,6 +7,7 @@ VCS_REF=$(git rev-parse --short HEAD)
 
 printenv
 
+
 # ensure we're up to date
 git pull
 
@@ -20,7 +21,7 @@ echo "version: $version"
 
 # tag it
 git add -A
-git commit -m "$USERNAME/$IMAGE $version"
+git commit -m "$IMAGE $version"
 git tag -a "$IMAGE_$version" -m "$IMAGE version $version"
 git push
 git push --tags
