@@ -54,7 +54,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   && ./configure \
   --prefix=$NGINX_PATH \
   --sbin-path=/usr/sbin/nginx \
-  --modules-path=/usr/lib/nginx/modules \
+  --modules-path=$NGINX_PATH/modules \
   --conf-path=$NGINX_PATH/nginx.conf \
   --error-log-path=/var/log/nginx/error.log \
   --http-log-path=/var/log/nginx/access.log \
