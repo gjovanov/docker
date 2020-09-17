@@ -26,6 +26,7 @@ downloaded from https://dev.maxmind.com/geoip/geoip2/geolite2/
 
 If you want to use also the City GeoLite2 DB:
 - **GeoLite2-City.mmdb**
+
 then you need to download it yourself and use a docker volume binding to the local DB copy:
 - `-v /path_to/geoip/:/usr/share/geoip/`
 
