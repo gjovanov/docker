@@ -121,6 +121,7 @@ RUN rm -rf /var/lib/apt/lists/* \
   && mkdir -p /var/log/nginx \
   && touch /var/log/nginx/access.log /var/log/nginx/error.log \
   && chown nginx: /var/log/nginx/access.log /var/log/nginx/error.log \
+  && ldconfig \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log \
   && ls -al /usr/share/geoip/ \
