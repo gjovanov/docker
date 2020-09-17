@@ -98,10 +98,10 @@ RUN rm -rf /var/lib/apt/lists/* \
   --with-openssl=/opt/quiche/deps/boringssl \
   --with-quiche=/opt/quiche \
   --add-module=/opt/ngx_brotli \
-  --add-module=/opt/ngx_http_geoip2_module \
   --add-module=/opt/headers-more-nginx-module \
   --add-module=/opt/njs/nginx \
   --add-module=/opt/nginx_cookie_flag_module \
+  --add-dynamic-module=/opt/ngx_http_geoip2_module \
   && make \
   && make install
 
@@ -110,6 +110,7 @@ FROM debian:buster-slim
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
+COPY --from=builder /usr/local/ /usr/local/
 
 ADD ./geoip/ /usr/share/geoip/
 
