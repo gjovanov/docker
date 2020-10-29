@@ -2,9 +2,9 @@
 #FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257 AS prebuilder
 FROM debian:buster-slim AS prebuilder
 
-ARG LIBNICE_VERSION="0.1.16"
+ARG LIBNICE_VERSION="0.1.18"
 ARG LIBSRTP_VERSION="v2.3.0"
-ARG LIBWEBSOCKETS_VERSION="v3.2.2"
+ARG LIBWEBSOCKETS_VERSION="v4.1.4"
 ARG USRSCTP_VERSION="0.9.3.0"
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -21,21 +21,27 @@ RUN rm -rf /var/lib/apt/lists/* \
   automake \
   autotools-dev \
   build-essential \
+  python3 \
+  python3-pip \
+  python3-setuptools \
+  python3-wheel \
+  ninja-build \
   git \
   cmake \
   autoconf \
   gtk-doc-tools \
   libgnutls28-dev \
   libglib2.0-dev \
+  && pip3 install meson \
 #Install libnice (ICE candidates)
   && cd / \
   && git clone https://gitlab.freedesktop.org/libnice/libnice \
   && cd libnice \
   && git checkout ${LIBNICE_VERSION} \
-  && ./autogen.sh \
-  && ./configure --prefix=/opt/deps \
-  && make \
-  && make install \
+  && meson --prefix=/opt/deps build \
+  && ninja -C build \
+  && ninja -C build install \
+  && mv /opt/deps/lib/x86_64-linux-gnu/pkgconfig /opt/deps/lib/ \
 # Install libsrtp (Secure Real-time Transport Protocol)
 #  && apt-get remove -y libsrtp0-dev \
   && cd / \
@@ -73,7 +79,7 @@ LABEL description="Janus Gateway Lean Docker Image"
 
 # COPY VERSION .
 
-ARG JANUS_VERSION="v0.10.4"
+ARG JANUS_VERSION="v0.10.7"
 WORKDIR /opt/
 
 COPY --from=prebuilder /opt .
@@ -107,12 +113,16 @@ RUN rm -rf /var/lib/apt/lists/* \
   autoconf \
   zlib1g-dev \
   libcurl4-openssl-dev \
+  && ls -al /opt/deps/bin \
+  && ls -al /opt/deps/lib \
+  && ls -al /opt/deps/lib/pkgconfig \
 # Install Janus Gateway
   && cd /tmp \
   && git clone https://github.com/meetecho/janus-gateway.git \
   && cd janus-gateway \
-  && git checkout ${JANUS_VERSION} \
+#  && git checkout ${JANUS_VERSION} \
   && sh autogen.sh \
+#  && export PKG_CONFIG_PATH=/opt/deps/lib/x86_64-linux-gnu/pkgconfig \
   && export PKG_CONFIG_PATH=/opt/deps/lib/pkgconfig \
   && ./configure \
   --prefix=/opt/janus \
