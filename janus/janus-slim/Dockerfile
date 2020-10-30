@@ -41,7 +41,9 @@ RUN rm -rf /var/lib/apt/lists/* \
   && meson --prefix=/opt/deps build \
   && ninja -C build \
   && ninja -C build install \
-  && mv /opt/deps/lib/x86_64-linux-gnu/pkgconfig /opt/deps/lib/ \
+  && ls -al /opt/deps/lib/x86_64-linux-gnu/ \
+  && mv /opt/deps/lib/x86_64-linux-gnu/* /opt/deps/lib/ \
+#  && mv /opt/deps/lib/x86_64-linux-gnu/pkgconfig /opt/deps/lib/ \
 # Install libsrtp (Secure Real-time Transport Protocol)
 #  && apt-get remove -y libsrtp0-dev \
   && cd / \
