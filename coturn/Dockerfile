@@ -47,7 +47,7 @@ RUN rm -rf /var/lib/apt/lists/* \
  && cd /tmp/coturn-* \
 # Build Coturn from sources.
  && ./configure \
-        --prefix=/opt/coturn \
+        --prefix=/opt/deps \
         --turndbdir=/var/lib/coturn \
         --disable-rpath \
         --sysconfdir=/etc/coturn \
@@ -81,8 +81,8 @@ RUN rm -rf /var/lib/apt/lists/* \
   && apt-get -y update \
   && apt-get autoremove -y \
   && apt-get install -y curl \
-  && ls /opt/coturn \
-#  && ls /opt/coturn\lib \
+  && ls -al /opt/deps/bin \
+  && ls -al /opt/deps/lib \
 #  && apt-get install -y libconfig9 libglib2.0-0 \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
