@@ -46,7 +46,8 @@ RUN rm -rf /var/lib/apt/lists/* \
  && tar -xzf /tmp/coturn.tar.gz -C /tmp/ \
  && cd /tmp/coturn-* \
 # Build Coturn from sources.
- && ./configure --prefix=/opt \
+ && ./configure \
+        --prefix=/opt/coturn \
         --turndbdir=/var/lib/coturn \
         --disable-rpath \
         --sysconfdir=/etc/coturn \
@@ -79,7 +80,10 @@ COPY scripts/ /scripts/
 RUN rm -rf /var/lib/apt/lists/* \
   && apt-get -y update \
   && apt-get autoremove -y \
-  && apt-get install -y libconfig9 libglib2.0-0 \
+  && apt-get install -y curl \
+  && ls /opt/coturn \
+#  && ls /opt/coturn\lib \
+#  && apt-get install -y libconfig9 libglib2.0-0 \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
   && rm -rf /var/lib/apt/*
