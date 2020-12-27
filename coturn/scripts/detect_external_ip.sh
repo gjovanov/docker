@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -z "$REAL_EXTERNAL_IP" ]; then
   export REAL_EXTERNAL_IP="$(curl -4 https://icanhazip.com 2>/dev/null)"

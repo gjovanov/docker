@@ -59,10 +59,10 @@ RUN rm -rf /var/lib/apt/lists/* \
  # Install and configure Coturn.
  && make install
 
-#FROM debian:buster-slim AS prebuilder
-FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257
+FROM debian:buster-slim
+#FROM debian@sha256:1b8a66f829a3563f98f941f4e0e2ecc619ad12f22331d297d2a9d1e2f18dc257
 LABEL maintainer="Goran Jovanov <goran.jovanov@gmail.com>"
-LABEL description="Janus Gateway Lean Docker Image"
+LABEL description="Coturn Docker Image"
 
 # COPY VERSION .
 
@@ -73,7 +73,7 @@ COPY --from=prebuilder /opt .
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ADD scripts/ /scripts/
+COPY scripts/ /scripts/
 
 # Install Build Dependencies
 RUN rm -rf /var/lib/apt/lists/* \
@@ -83,6 +83,12 @@ RUN rm -rf /var/lib/apt/lists/* \
   && apt-get clean \
   && apt-get autoremove --purge shared-mime-info -y \
   && rm -rf /var/lib/apt/*
+
+
+#RUN chmod +x /scripts/docker-entrypoint.sh \
+#             /scripts/detect-external-ip.sh \
+# && ln -s /scripts/detect-external-ip.sh \
+#          /scripts/detect-external-ip
 
 EXPOSE 3478 3478/udp
 
