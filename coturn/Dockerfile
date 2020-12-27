@@ -3,28 +3,39 @@ FROM debian:buster-slim AS prebuilder
 ARG coturn_ver=4.5.1.3
 ARG DEBIAN_FRONTEND=noninteractive
 
-
-ADD scripts/ /scripts/
-
 # Prebuilder is just for sake of caching and legibility. It is used to build Janus' dependancies Install Build Dependencies
 RUN rm -rf /var/lib/apt/lists/* \
   && apt-get -y update \
   && apt-get install -yq apt-utils \
   && apt-get install -yq \
+  adduser \
   libevent-dev \
-  libcrypto1.1-udeb \
-  libssl1.1 \
-  libpq-dev \
+  libevent-core-2.1-6 \
+  libevent-extra-2.1-6 \
+  libevent-openssl-2.1-6 \
+  libevent-pthreads-2.1-6  \
+  libhiredis-dev \
+  libhiredis0.14 \
   libmariadb3 \
   libmariadb-dev \
+  libpq5 \
+  libpq-dev \
+  libsqlite3-0 \
   libsqlite3-dev \
-  libhiredis-dev \
+  libssl1.1 \
+  libssl-dev \
+  lsb-base \
+  sqlite3 \
+  telnet \
+#  sip-router \
+#  xmpp-server \
   libmongoc-1.0-0 \
   libbson-1.0-0 \
   libtool \
   automake \
   autotools-dev \
   build-essential \
+  curl \
   g++ \
   git \
   cmake \
@@ -61,6 +72,8 @@ WORKDIR /opt/
 COPY --from=prebuilder /opt .
 
 ARG DEBIAN_FRONTEND=noninteractive
+
+ADD scripts/ /scripts/
 
 # Install Build Dependencies
 RUN rm -rf /var/lib/apt/lists/* \
