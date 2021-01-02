@@ -27,8 +27,6 @@ RUN rm -rf /var/lib/apt/lists/* \
   lsb-base \
   sqlite3 \
   telnet \
-#  sip-router \
-#  xmpp-server \
   libmongoc-1.0-0 \
   libbson-1.0-0 \
   libtool \
@@ -80,7 +78,23 @@ COPY scripts/ /scripts/
 RUN rm -rf /var/lib/apt/lists/* \
   && apt-get -y update \
   && apt-get autoremove -y \
-  && apt-get install -y curl \
+  && apt-get install -y \
+  curl \
+  adduser \
+  libevent-core-2.1-6 \
+  libevent-extra-2.1-6 \
+  libevent-openssl-2.1-6 \
+  libevent-pthreads-2.1-6  \
+  libhiredis0.14 \
+  libmariadb3 \
+  libpq5 \
+  libsqlite3-0 \
+  libssl1.1 \
+  lsb-base \
+  sqlite3 \
+  telnet \
+  libmongoc-1.0-0 \
+  libbson-1.0-0 \
   && ls -al /opt/deps/bin \
   && ls -al /opt/deps/lib \
 #  && apt-get install -y libconfig9 libglib2.0-0 \
