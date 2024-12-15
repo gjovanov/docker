@@ -161,6 +161,7 @@ RUN rm -rf /var/lib/apt/lists/* \
 
 EXPOSE 7088 8088 8188 8089
 
+EXPOSE 10000-10200/tcp
 EXPOSE 10000-10200/udp
 
 
